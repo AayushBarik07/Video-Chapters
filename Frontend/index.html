@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChapterCut — YouTube Chapter Generator</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts: Syne (display) + DM Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!--    GRAIN OVERLAY    -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!--    TOP NAV    -->
+  <header class="top-nav">
+    <div class="nav-brand">
+      <span class="brand-icon">⬡</span>
+      <!-- <span class="brand-name">ChapterCut</span> -->
+    </div>
+    <div class="nav-actions">
+      <!-- Dark / Light mode toggle -->
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle dark/light mode">
+        <span class="theme-icon" id="themeIcon">☀</span>
+      </button>
+    </div>
+  </header>
+
+  <!--    LANDING / HERO SECTION  -->
+  <section class="hero-section" id="heroSection">
+    <div class="hero-inner">
+      <!-- <div class="hero-badge">YouTube Chapter Generator</div> -->
+      <h1 class="hero-title">
+        Time Has<br />
+        <span class="hero-accent">CHAPTERS.</span>
+      </h1>
+
+      <!--    EMPTY STATE (before any video)    -->
+      <div class="empty-state" id="emptyState" aria-hidden="true">
+        <div class="empty-icon">▶</div>
+      </div>
+
+      <p class="hero-subtitle">
+        Paste any YouTube URL and instantly generate smart, clickable chapters
+        to navigate like a pro — no time wasted, easy access.
+      </p>
+
+      <!-- URL Input Card -->
+      <div class="url-card" id="urlCard">
+        <div class="url-input-row">
+          <div class="input-wrapper">
+            <span class="input-icon">▶</span>
+            <input
+              type="text"
+              id="urlInput"
+              class="url-input"
+              placeholder="https://www.youtube.com/watch?v=..."
+              autocomplete="off"
+              spellcheck="false"
+              aria-label="YouTube video URL"
+            />
+            <button class="clear-btn" id="clearBtn" title="Clear input" aria-label="Clear input" hidden>✕</button>
+          </div>
+          <button class="generate-btn" id="generateBtn">
+            <span class="btn-text">Generate Chapters</span>
+            <span class="btn-arrow">→</span>
+          </button>
+        </div>
+
+        <!-- Inline error message -->
+        <div class="error-message" id="errorMessage" role="alert" aria-live="polite" hidden>
+          <span class="error-icon">⚠</span>
+          <span id="errorText">Please enter a valid YouTube URL.</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Decorative background shapes -->
+    <div class="hero-deco" aria-hidden="true">
+      <div class="deco-ring deco-ring-1"></div>
+      <div class="deco-ring deco-ring-2"></div>
+      <div class="deco-ring deco-ring-3"></div>
+    </div>
+  </section>
+
+  <!--    FEATURED VIDEOS CAROUSEL   
+       Shown on the landing page, above the empty state.
+       Each card calls loadVideo() via JS — all existing functionality untouched. -->
+  <section class="carousel-section" id="carouselSection">
+    <div class="carousel-header">
+      <h2 class="carousel-title">Featured Videos</h2>
+      <p class="carousel-subtitle">Want to know how it works? Try one of these examples!</p>
+    </div>
+
+    <!-- Track + slides -->
+    <div class="carousel-viewport" aria-label="Featured video carousel">
+      <div class="carousel-track" id="carouselTrack">
+
+        <!-- Slide 1 -->
+        <div class="carousel-slide" role="listitem">
+          <button
+            class="carousel-card"
+            data-videoid="RJTCAL1DRro"
+            aria-label="Load video RJTCAL1DRro"
+          >
+            <!-- Thumbnail loaded via JS to avoid CORB issues -->
+            <div class="carousel-thumb-wrap">
+              <img
+                class="carousel-thumb"
+                src="https://img.youtube.com/vi/RJTCAL1DRro/mqdefault.jpg"
+                alt="Featured video 1 thumbnail"
+                loading="lazy"
+              />
+              <div class="carousel-play-overlay">
+                <span class="carousel-play-icon">▶</span>
+              </div>
+            </div>
+            <div class="carousel-card-body">
+              <span class="carousel-card-label">Featured #1</span>
+              <!-- <span class="carousel-card-id">RJTCAL1DRro</span> -->
+              <span class="carousel-cta">Generate Chapters →</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-slide" role="listitem">
+          <button
+            class="carousel-card"
+            data-videoid="jj_aUFX8SV8"
+            aria-label="Load video jj_aUFX8SV8"
+          >
+            <div class="carousel-thumb-wrap">
+              <img
+                class="carousel-thumb"
+                src="https://img.youtube.com/vi/jj_aUFX8SV8/mqdefault.jpg"
+                alt="Featured video 2 thumbnail"
+                loading="lazy"
+              />
+              <div class="carousel-play-overlay">
+                <span class="carousel-play-icon">▶</span>
+              </div>
+            </div>
+            <div class="carousel-card-body">
+              <span class="carousel-card-label">Featured #2</span>
+              <!-- <span class="carousel-card-id">jj_aUFX8SV8</span> -->
+              <span class="carousel-cta">Generate Chapters →</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="carousel-slide" role="listitem">
+          <button
+            class="carousel-card"
+            data-videoid="xmmxkmVSiq0"
+            aria-label="Load video xmmxkmVSiq0"
+          >
+            <div class="carousel-thumb-wrap">
+              <img
+                class="carousel-thumb"
+                src="https://img.youtube.com/vi/xmmxkmVSiq0/mqdefault.jpg"
+                alt="Featured video 3 thumbnail"
+                loading="lazy"
+              />
+              <div class="carousel-play-overlay">
+                <span class="carousel-play-icon">▶</span>
+              </div>
+            </div>
+            <div class="carousel-card-body">
+              <span class="carousel-card-label">Featured #3</span>
+              <!-- <span class="carousel-card-id">xmmxkmVSiq0</span> -->
+              <span class="carousel-cta">Generate Chapters →</span>
+            </div>
+          </button>
+        </div>
+
+      </div><!-- /carousel-track -->
+    </div><!-- /carousel-viewport -->
+
+    <!-- Controls -->
+    <div class="carousel-controls">
+      <button class="carousel-arrow carousel-prev" id="carouselPrev" aria-label="Previous slide">‹</button>
+
+      <!-- Dot indicators -->
+      <div class="carousel-dots" id="carouselDots" role="tablist" aria-label="Slide indicators">
+        <button class="carousel-dot active" data-slide="0" role="tab" aria-selected="true"  aria-label="Slide 1"></button>
+        <button class="carousel-dot"        data-slide="1" role="tab" aria-selected="false" aria-label="Slide 2"></button>
+        <button class="carousel-dot"        data-slide="2" role="tab" aria-selected="false" aria-label="Slide 3"></button>
+      </div>
+
+      <button class="carousel-arrow carousel-next" id="carouselNext" aria-label="Next slide">›</button>
+    </div>
+
+  </section><!-- /carousel-section -->
+
+  <!--    PLAYER + CHAPTERS SECTION    -->
+  <section class="player-section" id="playerSection" hidden>
+    <div class="player-layout">
+
+      <!-- ── LEFT: Video Column ── -->
+      <div class="video-column">
+
+        <!-- Video meta bar -->
+        <div class="video-meta-bar" id="videoMetaBar">
+          <button class="back-btn" id="backBtn" title="Try another video" aria-label="Try another video">
+            ← Back
+          </button>
+          <span class="video-id-label" id="videoIdLabel">Video ID: —</span>
+        </div>
+
+        <!-- Video wrapper with loading overlay -->
+        <div class="video-wrapper" id="videoWrapper">
+          <div class="video-loading" id="videoLoading" aria-live="polite">
+            <div class="spinner"></div>
+            <span>Loading video…</span>
+          </div>
+          <div id="ytPlayer"></div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-section">
+          <div class="progress-track" id="progressTrack" title="Video progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="progress-fill" id="progressFill"></div>
+            <div class="progress-thumb" id="progressThumb"></div>
+          </div>
+          <div class="progress-times">
+            <span id="currentTimeLabel">0:00</span>
+            <span id="durationLabel">—:——</span>
+          </div>
+        </div>
+
+        <!-- Like/ Dislike -->
+        <div class="video-actions">
+            <button
+                class="reaction-btn"
+                id="likeBtn"
+                aria-label="Like">
+                <svg
+                    class="reaction-icon"
+                    viewBox="0 0 24 24">
+                    <path
+                        d="M14 10V5c0-1.1-.9-2-2-2l-1 5-4 4v8h11c.8 0 1.5-.5 1.8-1.2l2-6c.1-.2.2-.5.2-.8v-2c0-1.1-.9-2-2-2h-6zM3 12h4v8H3z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <button
+                class="reaction-btn"
+                id="dislikeBtn"
+                aria-label="Dislike">
+                <svg
+                    class="reaction-icon"
+                    viewBox="0 0 24 24">
+                    <path
+                        d="M10 14v5c0 1.1.9 2 2 2l1-5 4-4V4H6c-.8 0-1.5.5-1.8 1.2l-2 6c-.1.2-.2.5-.2.8v2c0 1.1.9 2 2 2h6zM21 12h-4V4h4z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+      </div>
+      <!-- ── RIGHT: Chapter Sidebar ── -->
+      <aside class="chapter-sidebar" id="chapterSidebar">
+
+        <!-- Sidebar header -->
+        <div class="sidebar-header">
+          <h2 class="sidebar-title">Chapters</h2>
+          <span class="chapter-count-badge" id="chapterCountBadge">0</span>
+        </div>
+
+        <!-- Chapter search -->
+        <div class="search-wrapper">
+          <span class="search-icon">⌕</span>
+          <input
+            type="text"
+            id="chapterSearch"
+            class="chapter-search"
+            placeholder="Search chapters…"
+            aria-label="Search chapters"
+            autocomplete="off"
+          />
+          <button class="search-clear-btn" id="searchClearBtn" hidden aria-label="Clear search">✕</button>
+        </div>
+
+        <!-- Chapter list -->
+        <div class="chapter-list" id="chapterList" role="list">
+          <!-- Chapters injected by JS -->
+        </div>
+
+        <!-- No search results message -->
+        <div class="no-results" id="noResults" hidden>
+          <span>No chapters match your search.</span>
+        </div>
+
+      </aside>
+    </div>
+  </section>
+
+  <!-- YouTube IFrame API (loaded async) -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <!-- App script -->
+  <script src="script.js"></script>
+</body>
+</html>
